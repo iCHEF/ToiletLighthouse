@@ -12,6 +12,7 @@
 		CF2AED4A1B90DCE200F81923 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2AED491B90DCE200F81923 /* Images.xcassets */; };
 		CF2AED4D1B90DCE200F81923 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF2AED4B1B90DCE200F81923 /* MainMenu.xib */; };
 		CF2AED591B90DCE200F81923 /* ToiletLighthouseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED581B90DCE200F81923 /* ToiletLighthouseTests.swift */; };
+		CF2AED6A1B90EB9400F81923 /* ToiletLightHouseServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		CF2AED521B90DCE200F81923 /* ToiletLighthouseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToiletLighthouseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF2AED571B90DCE200F81923 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF2AED581B90DCE200F81923 /* ToiletLighthouseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToiletLighthouseTests.swift; sourceTree = "<group>"; };
+		CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToiletLightHouseServer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 		CF2AED441B90DCE200F81923 /* ToiletLighthouse */ = {
 			isa = PBXGroup;
 			children = (
+				CF2AED681B90EB4C00F81923 /* SocketServer */,
 				CF2AED471B90DCE200F81923 /* AppDelegate.swift */,
 				CF2AED491B90DCE200F81923 /* Images.xcassets */,
 				CF2AED4B1B90DCE200F81923 /* MainMenu.xib */,
@@ -136,6 +139,14 @@
 			children = (
 			);
 			name = ThirdPartyLibrary;
+			sourceTree = "<group>";
+		};
+		CF2AED681B90EB4C00F81923 /* SocketServer */ = {
+			isa = PBXGroup;
+			children = (
+				CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */,
+			);
+			name = SocketServer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF2AED481B90DCE200F81923 /* AppDelegate.swift in Sources */,
+				CF2AED6A1B90EB9400F81923 /* ToiletLightHouseServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
