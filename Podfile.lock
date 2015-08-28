@@ -1,0 +1,21 @@
+PODS:
+  - CocoaAsyncSocket (7.4.2)
+  - Realm (0.95.0):
+    - Realm/Headers (= 0.95.0)
+  - Realm/Headers (0.95.0)
+  - RealmSwift (0.95.0):
+    - Realm (= 0.95.0)
+  - SwiftyJSON (2.2.1)
+
+DEPENDENCIES:
+  - CocoaAsyncSocket (~> 7.4.2)
+  - RealmSwift
+  - SwiftyJSON (~> 2.2.1)
+
+SPEC CHECKSUMS:
+  CocoaAsyncSocket: f5783bdedd232d91b89769bc4b5a1580aed518ad
+  Realm: bbb171b96728ea136ed5cd354dca2a3d6529923c
+  RealmSwift: 35eeb642bf0b43dedfe363451ba3288d0e72ebb9
+  SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
+
+COCOAPODS: 0.37.2
