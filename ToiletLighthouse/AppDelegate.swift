@@ -12,10 +12,23 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-
+    
+    let statusBarItem = NSStatusBar.systemStatusBar().statusItemWithLength(-2)
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+        
+        if let button = statusBarItem.button {
+            button.image = NSImage(named: "lighthouse")
+        }
+        
+        
+        let menu = NSMenu()
+        
+        menu.addItem(NSMenuItem(title: "Shutdown Server", action: Selector("terminate:"), keyEquivalent: "q"))
+        
+        statusBarItem.menu = menu
+        
+        
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

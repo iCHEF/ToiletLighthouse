@@ -55,6 +55,7 @@
 		CF2AED391B90DCE200F81923 = {
 			isa = PBXGroup;
 			children = (
+				CF2AED621B90E1AD00F81923 /* ThirdPartyLibrary */,
 				CF2AED441B90DCE200F81923 /* ToiletLighthouse */,
 				CF2AED551B90DCE200F81923 /* ToiletLighthouseTests */,
 				CF2AED431B90DCE200F81923 /* Products */,
@@ -104,6 +105,13 @@
 				CF2AED571B90DCE200F81923 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CF2AED621B90E1AD00F81923 /* ThirdPartyLibrary */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ThirdPartyLibrary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,6 +332,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ToiletLighthouse/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -335,6 +348,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ToiletLighthouse/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -396,6 +414,7 @@
 				CF2AED5E1B90DCE200F81923 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CF2AED5F1B90DCE200F81923 /* Build configuration list for PBXNativeTarget "ToiletLighthouseTests" */ = {
 			isa = XCConfigurationList;
@@ -404,6 +423,7 @@
 				CF2AED611B90DCE200F81923 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
