@@ -13,6 +13,7 @@
 		CF2AED4D1B90DCE200F81923 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF2AED4B1B90DCE200F81923 /* MainMenu.xib */; };
 		CF2AED591B90DCE200F81923 /* ToiletLighthouseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED581B90DCE200F81923 /* ToiletLighthouseTests.swift */; };
 		CF2AED6A1B90EB9400F81923 /* ToiletLightHouseServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */; };
+		CF2AED6D1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED6C1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		CF2AED571B90DCE200F81923 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF2AED581B90DCE200F81923 /* ToiletLighthouseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToiletLighthouseTests.swift; sourceTree = "<group>"; };
 		CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToiletLightHouseServer.swift; sourceTree = "<group>"; };
+		CF2AED6C1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GCDAsyncSocket+DelegationHelper.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 		CF2AED441B90DCE200F81923 /* ToiletLighthouse */ = {
 			isa = PBXGroup;
 			children = (
+				CF2AED6B1B934DD200F81923 /* SocketHelper */,
 				CF2AED681B90EB4C00F81923 /* SocketServer */,
 				CF2AED471B90DCE200F81923 /* AppDelegate.swift */,
 				CF2AED491B90DCE200F81923 /* Images.xcassets */,
@@ -147,6 +150,14 @@
 				CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */,
 			);
 			name = SocketServer;
+			sourceTree = "<group>";
+		};
+		CF2AED6B1B934DD200F81923 /* SocketHelper */ = {
+			isa = PBXGroup;
+			children = (
+				CF2AED6C1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift */,
+			);
+			name = SocketHelper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,6 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF2AED6D1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift in Sources */,
 				CF2AED481B90DCE200F81923 /* AppDelegate.swift in Sources */,
 				CF2AED6A1B90EB9400F81923 /* ToiletLightHouseServer.swift in Sources */,
 			);

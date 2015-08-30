@@ -40,4 +40,8 @@ class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
         println(sock)
         println(newSocket)
     }
+    
+    func socket(sock: GCDAsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
+        
+    }
 }
