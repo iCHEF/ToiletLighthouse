@@ -18,6 +18,8 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
     
     var serverSocket:GCDAsyncSocket?
     
+    var serviceFound:[NSNetService?] = []
+    
     var bonjourBrowser:NSNetServiceBrowser
     
     let BM_DOMAIN = "local"
@@ -37,6 +39,9 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
         self.bonjourBrowser.delegate = self
         self.bonjourBrowser.searchForServicesOfType(BM_TYPE, inDomain: BM_DOMAIN)
     
+        
+        self.socket.delegate = self
+        self.socket.delegateQueue = dispatch_get_main_queue()
     }
     
     func stopService(){
@@ -50,25 +55,34 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
         print("service: \(service)")
         
         //呼叫解析ip
+        service.delegate = self
         service.resolveWithTimeout(100)
+        
+        //避免被釋放
+        self.serviceFound.append(service)
+        
+        
         
     }
     
     func netServiceDidResolveAddress(sender: NSNetService) {
         
-        if let serverAddressData = sender.addresses?.first {
+        if let serverAddresses = sender.addresses {
             
-            let serverAddress = self.getServerSocketAddressInfo(serverAddressData)
-            print("serverAddress: \(serverAddress)")
-            
-            do {
+            for addressData in serverAddresses {
                 
-                try self.socket.connectToAddress(serverAddressData, withTimeout: -1)
+                let serverAddress = self.getServerSocketAddressInfo(addressData)
+                print("serverAddress: \(serverAddress)")
                 
-            }catch let error as NSError {
-                
-                print(error)
+                do {
+                    
+                    try self.socket.connectToAddress(addressData, withTimeout: -1)
+                    
+                }catch {
+                    
+                }
             }
+            
             
         }
         
