@@ -1,21 +1,34 @@
 PODS:
   - CocoaAsyncSocket (7.4.2)
-  - Realm (0.95.0):
-    - Realm/Headers (= 0.95.0)
-  - Realm/Headers (0.95.0)
-  - RealmSwift (0.95.0):
-    - Realm (= 0.95.0)
+  - RxBlocking (2.0.0-alpha.3):
+    - RxSwift (~> 2.0.0-alpha)
+  - RxCocoa (2.0.0-alpha.3):
+    - RxSwift (~> 2.0.0-alpha)
+  - RxSwift (2.0.0-alpha.3)
   - SwiftyJSON (2.2.1)
 
 DEPENDENCIES:
-  - CocoaAsyncSocket (~> 7.4.2)
-  - RealmSwift
-  - SwiftyJSON (~> 2.2.1)
+  - CocoaAsyncSocket
+  - RxBlocking (~> 2.0.0-alpha)
+  - RxCocoa (~> 2.0.0-alpha)
+  - RxSwift (~> 2.0.0-alpha)
+  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON`, branch `xcode7`)
+
+EXTERNAL SOURCES:
+  SwiftyJSON:
+    :branch: xcode7
+    :git: https://github.com/SwiftyJSON/SwiftyJSON
+
+CHECKOUT OPTIONS:
+  SwiftyJSON:
+    :commit: 6eb4cda062fa09c4658e4184f92d822058f226e3
+    :git: https://github.com/SwiftyJSON/SwiftyJSON
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: f5783bdedd232d91b89769bc4b5a1580aed518ad
-  Realm: bbb171b96728ea136ed5cd354dca2a3d6529923c
-  RealmSwift: 35eeb642bf0b43dedfe363451ba3288d0e72ebb9
+  RxBlocking: 0a4086da64fbbc916ac0251252d93f5f4f97ce5a
+  RxCocoa: 2a45f35cd0eb6a01e081b3d11849c2fcb0bdb6de
+  RxSwift: c66f7956b2e5fb397a62bf4a3ec6072749a816a7
   SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

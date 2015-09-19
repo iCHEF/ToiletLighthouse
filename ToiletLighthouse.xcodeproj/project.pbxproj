@@ -207,6 +207,7 @@
 		CF2AED3A1B90DCE200F81923 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = iCHEF;
 				TargetAttributes = {

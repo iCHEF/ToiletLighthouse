@@ -7,8 +7,9 @@
 //
 
 import Cocoa
-//import SwiftyJSON
-//import RealmSwift
+import IOBluetooth
+import IOBluetoothUI
+
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -17,10 +18,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let statusBarItem = NSStatusBar.systemStatusBar().statusItemWithLength(-2)
     let socketServer = ToiletLightHouseServer()
+
     let startMenu:NSMenuItem = NSMenuItem(title: "Start Server", action: Selector("startService"), keyEquivalent: "")
     let stopMenu:NSMenuItem = NSMenuItem(title: "Stop Server", action: Selector("stopService"), keyEquivalent: "")
     let quitMenu:NSMenuItem = NSMenuItem(title: "Quit", action: Selector("terminate:"), keyEquivalent: "q")
     var isLaunched = false
+    
+    let deviceSelector = IOBluetoothDeviceSelectorController.deviceSelector()
+    var toiletDevice:IOBluetoothDevice?
+    var toiletDeviceChannel:IOBluetoothRFCOMMChannel?
+    
     
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
@@ -40,8 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusBarItem.menu = menu
         
         //初始啟動服務
-        
-        socketServer.startService()
+        startService()
         
         
     }
@@ -53,6 +59,40 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.stopMenu.enabled = true
         self.stopMenu.hidden = false
         socketServer.startService()
+        
+        
+        deviceSelector.runModal()
+        self.toiletDevice = deviceSelector.getResults().last as! IOBluetoothDevice?
+        print("deviceName: \(self.toiletDevice?.name)")
+        
+        if let toiletDevice = self.toiletDevice {
+            
+            let connectionResult = toiletDevice.openConnection()
+
+            if connectionResult == kIOReturnSuccess {
+                print("device connected")
+                toiletDevice.openRFCOMMChannelAsync(&toiletDeviceChannel, withChannelID: 1, delegate: self)
+                
+                if let toiletDeviceChannel = self.toiletDeviceChannel {
+                
+                    var datastring = "Fuck you"
+                    var data:NSData = datastring.dataUsingEncoding(NSASCIIStringEncoding)!
+                    
+                    var dataBytes:UnsafeMutablePointer<Void> = data.bytes
+                    
+                    toiletDeviceChannel.writeSync(data:data.bytes, length: data.length)
+                    
+                    if let toiletDeviceChannel = self.toiletDeviceChannel where toiletDeviceChannel.isOpen() {
+                        print("Channel open")
+                    }
+                    
+                }
+                
+            }
+            
+            
+        }
+        
     }
     
     func stopService() {
@@ -61,7 +101,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.startMenu.hidden = false
         self.stopMenu.enabled = false
         self.stopMenu.hidden = true
+        
+        //自動尋找bluetooth  device
+        
+        
         socketServer.stopService()
+        
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

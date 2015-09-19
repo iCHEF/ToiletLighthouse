@@ -25,20 +25,27 @@ class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
         socket.delegate = self
         socket.delegateQueue = dispatch_get_main_queue()
         
-        if socket.acceptOnPort(servicePort, error: nil){
-            println("ToiletLightHouse Launched at port \(servicePort)")
+        do {
+            
+            try socket.acceptOnPort(servicePort)
+            print("ToiletLightHouse Launched at port \(servicePort)")
+        
+        }catch {
+        
         }
+        
+        
     }
     
     func stopService(){
         socket.disconnect()
-        println("ToiletLightHouse lights Out")
+        print("ToiletLightHouse lights Out")
     }
     
     
     func socket(sock: GCDAsyncSocket!, didAcceptNewSocket newSocket: GCDAsyncSocket!) {
-        println(sock)
-        println(newSocket)
+        print(sock)
+        print(newSocket)
     }
     
     func socket(sock: GCDAsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
