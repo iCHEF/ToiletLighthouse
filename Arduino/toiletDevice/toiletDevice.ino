@@ -43,6 +43,7 @@ void loop() {
   if (isReported == false) {
     if (prevDoorStatus != doorStatus) {
        reportToServer(doorStatus);
+  
     }
   }
   
@@ -52,7 +53,7 @@ void loop() {
 
 bool reportToServer(int status) {
   //傳送訊息回Server
-  if (status == HIGH) {
+  if (status != HIGH) {
     int bytesSent = BT.write("1");
   }else {
     int bytesSent = BT.write("0");

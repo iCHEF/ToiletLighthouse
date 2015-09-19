@@ -23,7 +23,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let quitMenu:NSMenuItem = NSMenuItem(title: "Quit", action: Selector("terminate:"), keyEquivalent: "q")
     var isLaunched = false
     
-    let device:ToiletLightHouseDevice = ToiletLightHouseDevice()
+    var device:ToiletLightHouseDevice = ToiletLightHouseDevice()
+    
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         
@@ -55,11 +56,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         ToiletLightHouseServer.sharedInstance.startService()
         
-        //告知device server 已經啟動
-        device.sentServerLaunchedSignal()
+        self.device.connect()
         
+        //告知device server 已經啟動
+        self.device.sentServerLaunchedSignal()
         //要求device回傳開關的狀態
-        device.sentTest()
+        self.device.sentTest()
         
     }
     
@@ -72,10 +74,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         //自動尋找bluetooth  device
         ToiletLightHouseServer.sharedInstance.stopService()
-        
         //告知device server 已經關閉
-        device.sentServerStoppedSignal()
-                
+        self.device.sentServerStoppedSignal()
+        
+        self.device.disconnect()
+        
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {

@@ -24,6 +24,10 @@ class ToiletLightHouseDevice: IOBluetoothRFCOMMChannelDelegate {
         self.toiletDevice = IOBluetoothDevice(addressString:"98-D3-31-30-22-8B")
         print("deviceName: \(self.toiletDevice?.name)")
         
+    }
+    
+    func connect() {
+        
         if let toiletDevice = self.toiletDevice {
             
             let connectionResult = toiletDevice.openConnection()
@@ -40,6 +44,10 @@ class ToiletLightHouseDevice: IOBluetoothRFCOMMChannelDelegate {
             }
         }
         
+    }
+    
+    func disconnect() {
+        self.toiletDeviceChannel?.closeChannel()
     }
     
     func sentServerLaunchedSignal() {
