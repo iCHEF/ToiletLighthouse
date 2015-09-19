@@ -18,8 +18,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let statusBarItem = NSStatusBar.systemStatusBar().statusItemWithLength(-2)
 
-    let startMenu:NSMenuItem = NSMenuItem(title: "Start Server", action: Selector("startService"), keyEquivalent: "")
-    let stopMenu:NSMenuItem = NSMenuItem(title: "Stop Server", action: Selector("stopService"), keyEquivalent: "")
+    let startMenu:NSMenuItem = NSMenuItem(title: "Start Server", action: Selector("startServer"), keyEquivalent: "")
+    let stopMenu:NSMenuItem = NSMenuItem(title: "Stop Server", action: Selector("stopServer"), keyEquivalent: "")
     let quitMenu:NSMenuItem = NSMenuItem(title: "Quit", action: Selector("terminate:"), keyEquivalent: "q")
     var isLaunched = false
     
@@ -42,12 +42,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         statusBarItem.menu = menu
         
-        //初始啟動服務
-        startService()
+        //啟動服務
+        
+        //必定會啟動client來尋找服務
+        ToiletLightHouseClient.sharedInstance.startService()
+        
         
     }
     
-    func startService() {
+    func startServer() {
         
         self.startMenu.enabled = false
         self.startMenu.hidden = true
@@ -56,16 +59,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         ToiletLightHouseServer.sharedInstance.startService()
         
+        
+        //建立藍芽連線
         self.device.connect()
         
         //告知device server 已經啟動
         self.device.sentServerLaunchedSignal()
+        
         //要求device回傳開關的狀態
         self.device.sentTest()
         
     }
     
-    func stopService() {
+    func stopServer() {
         
         self.startMenu.enabled = true
         self.startMenu.hidden = false

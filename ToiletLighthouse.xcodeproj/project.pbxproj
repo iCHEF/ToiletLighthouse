@@ -14,6 +14,7 @@
 		CF2AED591B90DCE200F81923 /* ToiletLighthouseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED581B90DCE200F81923 /* ToiletLighthouseTests.swift */; };
 		CF2AED6A1B90EB9400F81923 /* ToiletLightHouseServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */; };
 		CF2AED6D1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED6C1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift */; };
+		CF7F86991BAE07A300677BCB /* ToiletLightHouseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F86981BAE07A300677BCB /* ToiletLightHouseClient.swift */; settings = {ASSET_TAGS = (); }; };
 		CFE55F981BAD5B1200A72959 /* BlueToothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE55F971BAD5B1200A72959 /* BlueToothDevice.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		CF2AED581B90DCE200F81923 /* ToiletLighthouseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToiletLighthouseTests.swift; sourceTree = "<group>"; };
 		CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToiletLightHouseServer.swift; sourceTree = "<group>"; };
 		CF2AED6C1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GCDAsyncSocket+DelegationHelper.swift"; sourceTree = "<group>"; };
+		CF7F86981BAE07A300677BCB /* ToiletLightHouseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToiletLightHouseClient.swift; sourceTree = "<group>"; };
 		CFE55F971BAD5B1200A72959 /* BlueToothDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlueToothDevice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,9 +106,8 @@
 		CF2AED441B90DCE200F81923 /* ToiletLighthouse */ = {
 			isa = PBXGroup;
 			children = (
-				CFE55F971BAD5B1200A72959 /* BlueToothDevice.swift */,
 				CF2AED6B1B934DD200F81923 /* SocketHelper */,
-				CF2AED681B90EB4C00F81923 /* SocketServer */,
+				CF2AED681B90EB4C00F81923 /* ConnectionLibrary */,
 				CF2AED471B90DCE200F81923 /* AppDelegate.swift */,
 				CF2AED491B90DCE200F81923 /* Images.xcassets */,
 				CF2AED4B1B90DCE200F81923 /* MainMenu.xib */,
@@ -147,12 +148,14 @@
 			name = ThirdPartyLibrary;
 			sourceTree = "<group>";
 		};
-		CF2AED681B90EB4C00F81923 /* SocketServer */ = {
+		CF2AED681B90EB4C00F81923 /* ConnectionLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				CFE55F971BAD5B1200A72959 /* BlueToothDevice.swift */,
+				CF7F86981BAE07A300677BCB /* ToiletLightHouseClient.swift */,
 				CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */,
 			);
-			name = SocketServer;
+			name = ConnectionLibrary;
 			sourceTree = "<group>";
 		};
 		CF2AED6B1B934DD200F81923 /* SocketHelper */ = {
@@ -315,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF2AED6D1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift in Sources */,
+				CF7F86991BAE07A300677BCB /* ToiletLightHouseClient.swift in Sources */,
 				CF2AED481B90DCE200F81923 /* AppDelegate.swift in Sources */,
 				CF2AED6A1B90EB9400F81923 /* ToiletLightHouseServer.swift in Sources */,
 				CFE55F981BAD5B1200A72959 /* BlueToothDevice.swift in Sources */,

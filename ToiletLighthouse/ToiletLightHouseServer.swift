@@ -10,17 +10,29 @@ import Cocoa
 import CocoaAsyncSocket
 import SwiftyJSON
 
-class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
+class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate,NSNetServiceDelegate {
     
     static let sharedInstance = ToiletLightHouseServer()
     
+    
+    let bonjourService:NSNetService
     let socket:GCDAsyncSocket
     let servicePort:UInt16 = 28370
     var connectedClients:[GCDAsyncSocket] = []
+    var isServerLaunched = false
+    
+    let BM_DOMAIN = "local"
+    let BM_TYPE = "_toiletlighthouse._tcp."
+    let BM_NAME = "toiletlighthouse"
+    let BM_PORT : CInt = 28370
+    
     
     override init() {
         
-        socket = GCDAsyncSocket()
+        self.socket = GCDAsyncSocket()
+        
+        self.bonjourService = NSNetService(domain: BM_DOMAIN,
+            type: BM_TYPE, name: BM_NAME, port: BM_PORT)
         
     }
 
@@ -28,6 +40,7 @@ class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
         
         socket.delegate = self
         socket.delegateQueue = dispatch_get_main_queue()
+        self.isServerLaunched = true
         
         do {
             
@@ -38,9 +51,16 @@ class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
         
         }
         
+        
+        self.bonjourService.delegate = self
+        self.bonjourService.publish()
+        
     }
     
+    
     func stopService(){
+        self.isServerLaunched = false
+        self.bonjourService.stop()
         socket.disconnect()
         print("ToiletLightHouse lights Out")
     }
