@@ -3,6 +3,7 @@
 SoftwareSerial BT(10, 9);
 const byte ledPin = 13;
 char val;
+bool doorStatus = true;
 
 void setup() {
   pinMode(ledPin, OUTPUT);
@@ -21,7 +22,16 @@ void loop() {
         break;
       case '1':
         digitalWrite(ledPin, 1);
-        break;        
+        break;  
+      case 'T':
+        //傳送訊息回Server
+        if (doorStatus == 1) {
+           int bytesSent = BT.write("1");
+        }else {
+          int bytesSent = BT.write("0");
+        }
+        
+        break;      
     }
   }
 }

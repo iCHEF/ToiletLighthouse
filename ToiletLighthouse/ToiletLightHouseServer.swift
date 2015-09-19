@@ -11,8 +11,11 @@ import CocoaAsyncSocket
 
 class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
     
+    static let sharedInstance = ToiletLightHouseServer()
+    
     let socket:GCDAsyncSocket
     let servicePort:UInt16 = 28370
+    var connectedClients:[GCDAsyncSocket] = []
     
     override init() {
         
@@ -34,7 +37,6 @@ class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
         
         }
         
-        
     }
     
     func stopService(){
@@ -42,10 +44,11 @@ class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
         print("ToiletLightHouse lights Out")
     }
     
-    
     func socket(sock: GCDAsyncSocket!, didAcceptNewSocket newSocket: GCDAsyncSocket!) {
-        print(sock)
-        print(newSocket)
+        
+        print("Client \(newSocket) is connected")
+        self.connectedClients.append(newSocket)
+        
     }
     
     func socket(sock: GCDAsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
