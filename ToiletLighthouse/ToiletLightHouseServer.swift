@@ -8,6 +8,7 @@
 
 import Cocoa
 import CocoaAsyncSocket
+import SwiftyJSON
 
 class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
     
@@ -44,10 +45,45 @@ class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate {
         print("ToiletLightHouse lights Out")
     }
     
+    func broadcastToiletStatus(dataString:String?) {
+        
+        if let toiletStatusString = dataString {
+        
+            for clientSocket in self.connectedClients {
+                self.sendToiletStatus(clientSocket, dataString: toiletStatusString)
+            }
+            
+        }
+        
+    }
+    
+    func sendToiletStatus(socket:GCDAsyncSocket, dataString:String?) {
+        
+        if let toiletStatusString = dataString {
+            
+            let sentDictionary = ["status":"\(toiletStatusString)"]
+            
+            let json = JSON(sentDictionary)
+            
+            let sentJSONData:NSData? = try! NSJSONSerialization.dataWithJSONObject(json.object, options: NSJSONWritingOptions.PrettyPrinted)
+            
+            let sentJSONMutableData:NSMutableData = NSMutableData(data: sentJSONData!)
+            
+            sentJSONMutableData.appendData(GCDAsyncSocket.CRLFData())
+            
+            socket.writeData(sentJSONMutableData, withTimeout: -1, tag: 1)
+            
+        }
+        
+    }
+    
+    
     func socket(sock: GCDAsyncSocket!, didAcceptNewSocket newSocket: GCDAsyncSocket!) {
         
         print("Client \(newSocket) is connected")
         self.connectedClients.append(newSocket)
+        
+        //TODO: 第一次連入要告知們的狀態
         
     }
     
