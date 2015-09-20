@@ -86,9 +86,10 @@ class ToiletLightHouseDevice: IOBluetoothRFCOMMChannelDelegate {
         
         let dataString = String.fromCString(UnsafePointer(dataPointer))
         
+        print("received data from device: \(dataString)")
         ToiletLightHouseServer.sharedInstance.broadcastToiletStatus(dataString)
         
-        print("received data fron device: \(dataString)")
+        
     }
     
 }

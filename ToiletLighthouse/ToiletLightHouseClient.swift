@@ -9,6 +9,17 @@
 import Cocoa
 import CocoaAsyncSocket
 import SwiftyJSON
+import RxSwift
+
+
+enum OccupationStatus: Int {
+    
+    case Unknown = -1
+    case Available = 0
+    case Occupied = 1
+    
+    
+}
 
 class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowserDelegate,NSNetServiceDelegate {
 
@@ -16,12 +27,15 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
     
     let socket:GCDAsyncSocket
     
+    var isToiletOccupied = Variable(OccupationStatus.Unknown)
+    
     var serverSocket:GCDAsyncSocket?
     
     var serviceFound:[NSNetService?] = []
     
     var bonjourBrowser:NSNetServiceBrowser
     
+    let servicePort:UInt16 = 28370
     let BM_DOMAIN = "local"
     let BM_TYPE = "_toiletlighthouse._tcp."
     
@@ -36,17 +50,16 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
     
     func startService() {
         
-        self.bonjourBrowser.delegate = self
-        self.bonjourBrowser.searchForServicesOfType(BM_TYPE, inDomain: BM_DOMAIN)
-    
-        
         self.socket.delegate = self
         self.socket.delegateQueue = dispatch_get_main_queue()
+        
     }
+    
+    
     
     func stopService(){
         
-        socket.disconnect()
+        self.disconnect()
         print("ToiletLightWatcher left duty")
     }
     
@@ -54,9 +67,11 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
         
         print("service: \(service)")
         
-        //呼叫解析ip
+        //要先設定netservice delegate
         service.delegate = self
-        service.resolveWithTimeout(100)
+        
+        //呼叫解析ip
+        service.resolveWithTimeout(-1)
         
         //避免被釋放
         self.serviceFound.append(service)
@@ -65,24 +80,46 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
         
     }
     
+    func connect() {
+        
+        //優先嘗試連自己是否就是server
+        do {
+            
+            try self.socket.connectToHost("127.0.0.1", onPort: servicePort)
+            
+        }catch {
+            
+            
+        }
+    }
+    
+    func disconnect() {
+        
+        self.bonjourBrowser.stop()
+        self.serviceFound = []
+        self.socket.disconnect()
+    }
+    
     func netServiceDidResolveAddress(sender: NSNetService) {
         
         if let serverAddresses = sender.addresses {
             
             for addressData in serverAddresses {
                 
-                let serverAddress = self.getServerSocketAddressInfo(addressData)
-                print("serverAddress: \(serverAddress)")
+                if let serverAddress = self.getServerSocketAddress(addressData) {
                 
-                do {
+                    print("serverAddress: \(serverAddress)")
                     
-                    try self.socket.connectToAddress(addressData, withTimeout: -1)
-                    
-                }catch {
-                    
+                    do {
+                        
+                        try self.socket.connectToAddress(addressData, withTimeout: -1)
+                        
+                    }catch {
+                        
+                    }
                 }
+                
             }
-            
             
         }
         
@@ -92,36 +129,69 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
         print("netService didNotResolve: \(errorDict)")
     }
     
-    func getServerSocketAddressInfo(address:NSData) -> String? {
+    func getServerSocketAddress(address:NSData) -> String? {
     
         let ptr = UnsafePointer<sockaddr_in>(address.bytes)
         var addr = ptr.memory.sin_addr
         let buf = UnsafeMutablePointer<Int8>.alloc(Int(INET6_ADDRSTRLEN))
-        var family = ptr.memory.sin_family
+        let family = ptr.memory.sin_family
         var ipc = UnsafePointer<Int8>()
+        
+        //只處理ipv4
         if family == __uint8_t(AF_INET) {
             ipc = inet_ntop(Int32(family), &addr, buf, __uint32_t(INET6_ADDRSTRLEN))
-        }
-        else if family == __uint8_t(AF_INET6) {
-            let ptr6 = UnsafePointer<sockaddr_in6>(address.bytes)
-            var addr6 = ptr6.memory.sin6_addr
-            family = ptr6.memory.sin6_family
-            ipc = inet_ntop(Int32(family), &addr6, buf, __uint32_t(INET6_ADDRSTRLEN))
+            
+            if let ip = String.fromCString(ipc) {
+                return ip
+            }
         }
         
-        if let ip = String.fromCString(ipc) {
-            return ip
-        }else {
-            return nil
-        }
+        return nil
     }
     
     func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
          print("server: \(host) is connected")
+        
+        self.socket.readDataToData(GCDAsyncSocket.CRLFData(), withTimeout: -1, tag: 0)
+        
     }
     
     func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
-        print("server is disconnected with error: \(err)")
+        
+        //print("server is disconnected with error: \(err)")
+        
+        print("I am not a local watcher, search for the lighthouse")
+        self.isToiletOccupied.value = OccupationStatus.Unknown
+        self.serviceFound = []
+        self.bonjourBrowser.delegate = self
+        self.bonjourBrowser.searchForServicesOfType(BM_TYPE, inDomain: BM_DOMAIN)
+        
+    }
+    
+    func socket(sock: GCDAsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
+        
+        let contentData:NSData = data.subdataWithRange(NSRange(location: 0, length: data.length-2))
+        
+        let statusJSON = JSON(data: contentData)
+                
+        if let status = statusJSON["status"].string {
+            print("client received toilet status: \(status)")
+            
+            if status == "1" {
+                self.isToiletOccupied.value = OccupationStatus.Occupied
+            }else if status == "0"{
+                self.isToiletOccupied.value = OccupationStatus.Available
+            }else {
+                self.isToiletOccupied.value = OccupationStatus.Unknown
+            }
+            
+            
+        }else {
+            self.isToiletOccupied.value = OccupationStatus.Unknown
+        }
+        
+        
+        self.socket.readDataToData(GCDAsyncSocket.CRLFData(), withTimeout: -1, tag: 0)
     }
     
 

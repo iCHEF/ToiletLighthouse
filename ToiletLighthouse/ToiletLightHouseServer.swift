@@ -61,14 +61,16 @@ class ToiletLightHouseServer: NSObject,GCDAsyncSocketDelegate,NSNetServiceDelega
     func stopService(){
         self.isServerLaunched = false
         self.bonjourService.stop()
-        socket.disconnect()
+        self.socket.disconnect()
         print("ToiletLightHouse lights Out")
     }
     
     func broadcastToiletStatus(dataString:String?) {
         
+        
         if let toiletStatusString = dataString {
         
+            print("Lighthouse Broadcast")
             for clientSocket in self.connectedClients {
                 self.sendToiletStatus(clientSocket, dataString: toiletStatusString)
             }

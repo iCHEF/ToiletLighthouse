@@ -28,9 +28,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         
-        if let button = statusBarItem.button {
-            button.image = NSImage(named: "lighthouse")
+        ToiletLightHouseClient.sharedInstance.isToiletOccupied.subscribeNext { newStatus in
+        
+            if let button = self.statusBarItem.button {
+                
+                switch newStatus {
+                case OccupationStatus.Unknown:
+                    button.image = NSImage(named: "lighthouseY")
+                case OccupationStatus.Available:
+                    button.image = NSImage(named: "lighthouseG")
+                case OccupationStatus.Occupied:
+                    button.image = NSImage(named: "lighthouseR")
+                    
+                }
+                
+            }
+            
         }
+        
+        
         
         
         let menu = NSMenu()
@@ -46,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         //必定會啟動client來尋找服務
         ToiletLightHouseClient.sharedInstance.startService()
-        
+        ToiletLightHouseClient.sharedInstance.connect()
         
     }
     
@@ -59,7 +75,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         ToiletLightHouseServer.sharedInstance.startService()
         
-        
         //建立藍芽連線
         self.device.connect()
         
@@ -68,6 +83,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         //要求device回傳開關的狀態
         self.device.sentTest()
+        
+        //嘗試自己連結自己
+        ToiletLightHouseClient.sharedInstance.disconnect()
+        ToiletLightHouseClient.sharedInstance.connect()
         
     }
     
@@ -78,12 +97,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.stopMenu.enabled = false
         self.stopMenu.hidden = true
         
-        //自動尋找bluetooth  device
+        //關閉server
         ToiletLightHouseServer.sharedInstance.stopService()
+        
         //告知device server 已經關閉
         self.device.sentServerStoppedSignal()
         
         self.device.disconnect()
+        
+        //重新啟動自己的client
+        ToiletLightHouseClient.sharedInstance.stopService()
+        ToiletLightHouseClient.sharedInstance.startService()
         
     }
 
