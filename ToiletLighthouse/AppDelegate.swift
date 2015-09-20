@@ -9,6 +9,7 @@
 import Cocoa
 import IOBluetooth
 import IOBluetoothUI
+import RxSwift
 
 
 @NSApplicationMain
@@ -20,13 +21,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let startMenu:NSMenuItem = NSMenuItem(title: "Start Server", action: Selector("startServer"), keyEquivalent: "")
     let stopMenu:NSMenuItem = NSMenuItem(title: "Stop Server", action: Selector("stopServer"), keyEquivalent: "")
+    var watchMenu:NSMenuItem = NSMenuItem(title: "我很痛苦", action: Selector("watchToilet"), keyEquivalent: "")
     let quitMenu:NSMenuItem = NSMenuItem(title: "Quit", action: Selector("terminate:"), keyEquivalent: "q")
     var isLaunched = false
+    var isWatching = Variable(false)
+    
+    let notification:NSUserNotification = NSUserNotification()
     
     var device:ToiletLightHouseDevice = ToiletLightHouseDevice()
     
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        
+        notification.title = "該你上廁所了！！";
+        notification.informativeText = "現在廁所空了 快去啊！！";
+        notification.soundName = NSUserNotificationDefaultSoundName;
+        
         
         ToiletLightHouseClient.sharedInstance.isToiletOccupied.subscribeNext { newStatus in
         
@@ -37,6 +47,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     button.image = NSImage(named: "lighthouseY")
                 case OccupationStatus.Available:
                     button.image = NSImage(named: "lighthouseG")
+                    
+                    if self.isWatching.value {
+                        
+                        NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(self.notification)
+                        self.isWatching.value = false
+                    }
+                    
                 case OccupationStatus.Occupied:
                     button.image = NSImage(named: "lighthouseR")
                     
@@ -46,15 +63,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
         }
         
+        self.isWatching.subscribeNext { isWatching in
         
+            if isWatching {
+                self.watchMenu = NSMenuItem(title: "膀胱還ok", action: Selector("watchToilet"), keyEquivalent: "")
+            }else {
+                self.watchMenu = NSMenuItem(title: "我很痛苦", action: Selector("watchToilet"), keyEquivalent: "")
+            }
+            
+        }
         
         
         let menu = NSMenu()
         
-        menu.addItem(startMenu)
-        menu.addItem(stopMenu)
+        menu.addItem(self.startMenu)
+        menu.addItem(self.stopMenu)
         menu.addItem(NSMenuItem.separatorItem())
-        menu.addItem(quitMenu)
+        menu.addItem(self.watchMenu)
+        menu.addItem(NSMenuItem.separatorItem())
+        menu.addItem(self.quitMenu)
         
         statusBarItem.menu = menu
         
@@ -108,6 +135,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         //重新啟動自己的client
         ToiletLightHouseClient.sharedInstance.stopService()
         ToiletLightHouseClient.sharedInstance.startService()
+        
+    }
+    
+    func watchToilet() {
+        
+        if self.isWatching.value {
+            
+            self.isWatching.value = false
+        }else {
+            
+            self.isWatching.value = true
+        }
+        
+        
         
     }
 

@@ -15,6 +15,7 @@
 		CF2AED6A1B90EB9400F81923 /* ToiletLightHouseServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */; };
 		CF2AED6D1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2AED6C1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift */; };
 		CF7F86991BAE07A300677BCB /* ToiletLightHouseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F86981BAE07A300677BCB /* ToiletLightHouseClient.swift */; settings = {ASSET_TAGS = (); }; };
+		CF7F86FE1BAE7A2E00677BCB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF7F86FD1BAE7A2D00677BCB /* AVFoundation.framework */; };
 		CFE55F981BAD5B1200A72959 /* BlueToothDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE55F971BAD5B1200A72959 /* BlueToothDevice.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		CF2AED691B90EB9400F81923 /* ToiletLightHouseServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToiletLightHouseServer.swift; sourceTree = "<group>"; };
 		CF2AED6C1B937EC600F81923 /* GCDAsyncSocket+DelegationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GCDAsyncSocket+DelegationHelper.swift"; sourceTree = "<group>"; };
 		CF7F86981BAE07A300677BCB /* ToiletLightHouseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToiletLightHouseClient.swift; sourceTree = "<group>"; };
+		CF7F86FD1BAE7A2D00677BCB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CFE55F971BAD5B1200A72959 /* BlueToothDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlueToothDevice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF7F86FE1BAE7A2E00677BCB /* AVFoundation.framework in Frameworks */,
 				B824AAEEB645941850EBBFAE /* Pods_ToiletLighthouse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,6 +71,7 @@
 		114A3D79D514B4585FCC289F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF7F86FD1BAE7A2D00677BCB /* AVFoundation.framework */,
 				622F7B540302C96CB3AD418F /* Pods_ToiletLighthouse.framework */,
 			);
 			name = Frameworks;
