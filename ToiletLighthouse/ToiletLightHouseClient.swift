@@ -175,16 +175,18 @@ class ToiletLightHouseClient: NSObject,GCDAsyncSocketDelegate,NSNetServiceBrowse
         let statusJSON = JSON(data: contentData)
                 
         if let status = statusJSON["status"].string {
+            
             print("client received toilet status: \(status)")
             
-            if status == "1" {
+            switch status {
+                
+            case "1":
                 self.isToiletOccupied.value = OccupationStatus.Occupied
-            }else if status == "0"{
+            case "0":
                 self.isToiletOccupied.value = OccupationStatus.Available
-            }else {
+            default:
                 self.isToiletOccupied.value = OccupationStatus.Unknown
             }
-            
             
         }else {
             self.isToiletOccupied.value = OccupationStatus.Unknown
