@@ -85,10 +85,18 @@ class ToiletLightHouseDevice: IOBluetoothRFCOMMChannelDelegate {
     @objc func rfcommChannelData(rfcommChannel: IOBluetoothRFCOMMChannel!, data dataPointer: UnsafeMutablePointer<Void>, length dataLength: Int) {
         
         let dataString = String.fromCString(UnsafePointer(dataPointer))
+        print("received origin data from device: \(dataString)")
+        if let dataString = dataString {
+        
+            let cutDataString = dataString.substringToIndex(dataString.startIndex.advancedBy(1))
+            print("received cutoff data from device: \(cutDataString)")
+            
+            ToiletLightHouseServer.sharedInstance.broadcastToiletStatus(cutDataString)
+        }
+        
 
-        let cutDataString = dataString?.substringToIndex((dataString?.startIndex)!)
-                print("received data from device: \(dataString)")
-        ToiletLightHouseServer.sharedInstance.broadcastToiletStatus(cutDataString)
+        
+        
         
         
     }
