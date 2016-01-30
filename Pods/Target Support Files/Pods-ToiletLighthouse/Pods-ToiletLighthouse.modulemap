@@ -1,0 +1,6 @@
+framework module Pods_ToiletLighthouse {
+  umbrella header "Pods-ToiletLighthouse-umbrella.h"
+
+  export *
+  module * { export * }
+}
